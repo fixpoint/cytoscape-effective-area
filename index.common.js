@@ -29,7 +29,7 @@ var EffectiveArea = /** @class */ (function () {
                 };
             };
             try {
-                var r = _this.original.getCenterPan.call(cy, args);
+                var r = _this.original.getCenterPan.apply(cy, args);
                 if (!r) {
                     return r;
                 }
@@ -55,7 +55,7 @@ var EffectiveArea = /** @class */ (function () {
                 };
             };
             try {
-                var r = _this.original.getFitViewport.call(cy, args);
+                var r = _this.original.getFitViewport.apply(cy, args);
                 if (!r) {
                     return r;
                 }
