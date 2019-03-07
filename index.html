@@ -1,0 +1,157 @@
+<!DOCTYPE>
+<html>
+<title>cytoscape-effective-area.js demo</title>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<script src="./index.js"></script>
+<style>
+html {
+  font-size: 10px;
+}
+
+body {
+  display: flex;
+  font-size: 1.4rem;
+  margin: 0;
+  padding: 0;
+}
+
+#header {
+  color: #aabbcc;
+  flex: 0 0 300px;
+  padding: 2em;
+  filter: drop-shadow(2px 0 4px rgba(0, 0, 0, 0.12));
+  background: #333;
+}
+
+#header a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#header a:hover {
+  text-decoration: underline;
+}
+
+#header h1 {
+  font-size: 1.8rem;
+}
+
+#header h2 {
+  font-size: 1.2rem;
+  color: gray;
+}
+
+#cy {
+  position: relative;
+  flex: 1 1 auto;
+}
+
+#effective-area {
+  position: absolute;
+  left: 30px;
+  top: 90px;
+  width: 400px;
+  height: 500px;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 5px solid red;
+  z-index: 9999;
+}
+</style>
+<body>
+  <header id="header">
+    <a href="https://github.com/lambdalisue/cytoscape-effective-area">
+      <h1>cytoscape-effective-area</h1>
+      <h2>lambdalisue/cytoscape-effective-area</h2>
+    </a>
+    <p>Press "Fit" or "Center" button with/without an effective area</p>
+    <p>
+      <label>
+        <input id="effective-area-check" type="checkbox" checked/>
+        Enable an effective area
+      </label>
+    </p>
+    <p>
+      <button id="fit-button" type="button">Fit</button>
+      <button id="center-button" type="button">Center</button>
+    </p>
+  </header>
+  <div id="cy">
+    <div id="effective-area"/>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      var cy = window.cy = cytoscape({
+        container: document.getElementById('cy'),
+        style: [
+          {
+            selector: 'node',
+            style: {
+              'content': 'data(name)'
+            }
+          },
+          {
+            selector: 'node.effective-areaed',
+            style: {
+              'overlay-color': 'red',
+              'overlay-padding': '5px',
+              'overlay-opacity': 0.5,
+            }
+          },
+          {
+            selector: 'edge',
+            style: {
+              'curve-style': 'bezier',
+              'target-arrow-shape': 'triangle'
+            }
+          }
+        ],
+        elements: {
+          nodes: [
+            { data: { id: 'j', name: 'Jerry' } },
+            { data: { id: 'e', name: 'Elaine' } },
+            { data: { id: 'k', name: 'Kramer' } },
+            { data: { id: 'g', name: 'George' } }
+          ],
+          edges: [
+            { data: { source: 'j', target: 'e' } },
+            { data: { source: 'j', target: 'k' } },
+            { data: { source: 'j', target: 'g' } },
+            { data: { source: 'e', target: 'j' } },
+            { data: { source: 'e', target: 'k' } },
+            { data: { source: 'k', target: 'j' } },
+            { data: { source: 'k', target: 'e' } },
+            { data: { source: 'k', target: 'g' } },
+            { data: { source: 'g', target: 'j' } }
+          ]
+        }
+      });
+      var effectiveArea = {
+        x: 30,
+        y: 90,
+        width: 400,
+        height: 500,
+      };
+      var ea = cy.effectiveArea(function() {
+        return effectiveArea;
+      });
+      document.getElementById('fit-button').addEventListener('click', function() {
+        cy.fit();
+      });
+      document.getElementById('center-button').addEventListener('click', function() {
+        cy.center();
+      });
+      document.getElementById('effective-area-check').addEventListener('change', function(e) {
+        if (e.target.checked) {
+          ea.enable(function() {
+            return effectiveArea;
+          });
+        } else {
+          ea.disable();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
