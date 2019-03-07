@@ -1,6 +1,6 @@
 {
   "name": "cytoscape-effective-area",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Invoke fit/center with an effective area",
   "main": "./dist/index.common.js",
   "module": "./dist/index.esm.js",
