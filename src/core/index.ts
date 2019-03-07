@@ -31,7 +31,7 @@ export class EffectiveArea {
         };
       };
       try {
-        const r = this.original.getCenterPan.call(cy, args);
+        const r = this.original.getCenterPan.apply(cy, args);
         if (!r) {
           return r;
         }
@@ -52,7 +52,7 @@ export class EffectiveArea {
         };
       };
       try {
-        const r = this.original.getFitViewport.call(cy, args);
+        const r = this.original.getFitViewport.apply(cy, args);
         if (!r) {
           return r;
         }
